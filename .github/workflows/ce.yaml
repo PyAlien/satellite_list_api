@@ -1,51 +1,22 @@
 name: CE - Check ESLint
 
-# Событие, при котором будет запускаться автоматизация.
-# В данном случае CE будет запускаться при каждом pull request в любую ветку.
-# Вместо '*' можно указать конкретную ветку, например, 'main' или 'develop'.
 on:
   pull_request:
     branches:
-      - '*'   # указать название ветки
+      - '*'
 
 jobs:
-  # Определяем один или несколько jobs (задач), которые выполняются параллельно или последовательно
   lint:
-    # Указываем операционную систему, на которой будет выполняться job
-    runs-on: ubuntu-latest  # Используем последнюю версию Ubuntu для выполнения шагов
+    runs-on: ubuntu-latest
 
     steps:
-      # Шаг 1: Проверяем код из репозитория
-      # Этот шаг клонирует код проекта на машину, где будут выполняться следующие шаги
       - name: Checkout code
         uses: actions/checkout@v2
-
-      # Шаг 2: Настройка Node.js (для запуска npm команд)
       - name: Set up Node.js
-        uses: actions/setup-node@v2  # Открывает репозиторий, который вызвал этот GitHub Action
+        uses: actions/setup-node@v2
         with:
-          node-version: '14'  # укажите версию Node.js
-
-      # Шаг 3: Установка зависимостей проекта
-      # Этот шаг устанавливает все зависимости, указанные в `package.json`
+          node-version: '20'
       - name: Install dependencies
-        run: npm install # Устанавливает все пакеты из `package.json`, включая ESLint
-
-      # Шаг 4: Запуск ESLint для проверки всех файлов в папке src
+        run: npm install
       - name: Run ESLint
-        # Запускаем ESLint для файлов с расширениями .js, .ts, .tsx, и останавливаем выполнение при наличии предупреждений
         run: npx eslint 'src/**/*.{js,ts,tsx}' --max-warnings=0
-
-      # Шаг 5: Завершаем работу с ошибкой, если есть хотя бы одно предупреждение или ошибка
-      # В этом шаге мы проверяем статус выполнения ESLint и завершаем процесс с ошибкой, если были найдены предупреждения или ошибки
-      - name: Check ESLint status
-        run: |
-          # Выполняем ESLint с флагом --max-warnings=0, чтобы прекратить выполнение на предупреждениях
-          if [[ $(npx eslint 'src/**/*.{js,ts,tsx}' --max-warnings=0 --quiet) ]]; then
-            # Если ESLint вернул ошибки или предупреждения, выводим сообщение и завершаем job с кодом ошибки 1
-            echo "ESLint found errors or warnings."
-            exit 1
-          else
-            # Если ошибок и предупреждений нет, выводим успешное сообщение
-            echo "ESLint check passed!"
-          fi
