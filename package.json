@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "nodemon --ext ts --exec ts-node src/server.ts",
+    "build": "tsc",
+    "start": "node dist/server.js"
   },
   "keywords": [],
   "author": "",
@@ -11,10 +13,13 @@
   "description": "",
   "devDependencies": {
     "@eslint/js": "^9.22.0",
+    "@types/cors": "^2.8.17",
     "@types/eslint__js": "^8.42.3",
+    "@types/express": "^5.0.1",
+    "@types/node": "^22.13.13",
     "@typescript-eslint/eslint-plugin": "^8.26.1",
     "@typescript-eslint/parser": "^8.26.1",
-    "eslint": "^9.22.0",
+    "eslint": "^9.23.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-import-resolver-typescript": "^3.9.1",
     "eslint-plugin-import": "^2.31.0",
@@ -33,5 +38,12 @@
     "printWidth": 120,
     "tabWidth": 2,
     "endOfLine": "lf"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "pino": "^9.6.0",
+    "pino-pretty": "^13.0.0"
   }
 }
