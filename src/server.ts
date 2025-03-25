@@ -2,7 +2,7 @@ import dotenv from 'dotenv';
 import express from 'express';
 import { logRoutes } from './bootstrap/log-routes';
 import logger from './logger/pino.logger';
-import { LogRequest } from './middlewares';
+import { ErrorHandler, LogRequest } from './middlewares';
 import satelliteController from './modules/satellite/satellite.controller';
 
 dotenv.config();
@@ -13,6 +13,8 @@ app.use(express.json());
 app.use(LogRequest);
 
 app.use('/satellite', satelliteController);
+
+app.use(ErrorHandler);
 
 logRoutes(app);
 
