@@ -3,7 +3,7 @@ import { satelliteService } from './satellite.service';
 
 const satelliteController = Router();
 
-satelliteController.get('/', (req: Request, res: Response) => {
+satelliteController.get('', (req: Request, res: Response) => {
   const result = satelliteService.findAll();
 
   res.json(result);
