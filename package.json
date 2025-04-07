@@ -1,0 +1,46 @@
+{
+  "name": "satellite_list_api",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "start:prod": "node dist/server.js",
+    "start:dev": "ts-node src/server.ts",
+    "start:watch": "nodemon --ext ts --exec && npm run start:dev"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.23.0",
+    "@types/eslint__js": "^8.42.3",
+    "@types/express": "^5.0.1",
+    "@typescript-eslint/eslint-plugin": "^8.28.0",
+    "@typescript-eslint/parser": "^8.28.0",
+    "eslint": "^9.23.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-import-resolver-typescript": "^3.10.0",
+    "eslint-plugin-import": "^2.31.0",
+    "eslint-plugin-prettier": "^5.2.5",
+    "eslint-plugin-simple-import-sort": "^12.1.1",
+    "eslint-plugin-unused-imports": "^4.1.4",
+    "prettier": "^3.5.3",
+    "typescript": "^5.8.2",
+    "typescript-eslint": "^8.28.0"
+  },
+  "prettier": {
+    "singleQuote": true,
+    "trailingComma": "all",
+    "printWidth": 120,
+    "tabWidth": 2,
+    "endOfLine": "lf"
+  },
+  "private": true,
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "nanoid": "^3.3.11",
+    "pino": "^9.6.0",
+    "pino-pretty": "^13.0.0"
+  }
+}
