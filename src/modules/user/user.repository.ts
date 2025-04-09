@@ -12,8 +12,8 @@ export const userRepository = {
     return newUser;
   },
 
-  findByUsername(username: string): User | null {
-    return users.find((user) => user.username === username) || null;
+  findByEmail(email: string): User | null {
+    return users.find((user) => user.email === email) || null;
   },
 
   findById(id: string): User | null {

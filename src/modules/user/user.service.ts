@@ -4,11 +4,11 @@ import { User } from './user.type';
 
 export const userService = {
   register(data: Omit<User, 'id'>): User {
-    logger.info(`Регистрация пользователя "${data.username}"`);
+    logger.info(`Регистрация пользователя "${data.email}"`);
 
-    const exists: User | null = userRepository.findByUsername(data.username);
+    const exists: User | null = userRepository.findByEmail(data.email);
     if (exists) {
-      throw new Error('Пользователь с таким именем уже существует');
+      throw new Error('Пользователь с таким email уже существует');
     }
 
     return userRepository.save(data);
@@ -17,7 +17,7 @@ export const userService = {
   login(username: string, password: string): User {
     logger.info(`Логин пользователя "${username}"`);
 
-    const user = userRepository.findByUsername(username);
+    const user = userRepository.findByEmail(username);
     if (!user || user.password !== password) {
       throw new Error('Неверный логин или пароль');
     }
