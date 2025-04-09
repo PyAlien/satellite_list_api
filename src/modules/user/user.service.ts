@@ -14,12 +14,13 @@ export const userService = {
     return userRepository.save(data);
   },
 
-  login(username: string, password: string): User {
-    logger.info(`Логин пользователя "${username}"`);
+  login(dto: Pick<User, 'email' | 'password'>): User {
+    const { email, password } = dto;
+    logger.info(`Логин для пользователя "${email}"`);
 
-    const user = userRepository.findByEmail(username);
+    const user = userRepository.findByEmail(email);
     if (!user || user.password !== password) {
-      throw new Error('Неверный логин или пароль');
+      throw new Error('Неверная почта или пароль');
     }
 
     return user;
