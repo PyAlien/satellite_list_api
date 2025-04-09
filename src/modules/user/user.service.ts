@@ -1,3 +1,4 @@
+import { compareSync, hashSync } from 'bcrypt';
 import { logger } from '../../logger/pino.logger';
 import { userRepository } from './user.repository';
 import { User } from './user.type';
@@ -11,6 +12,8 @@ export const userService = {
       throw new Error('Пользователь с таким email уже существует');
     }
 
+    data.password = hashSync(data.password, 4);
+
     return userRepository.save(data);
   },
 
@@ -19,7 +22,7 @@ export const userService = {
     logger.info(`Логин для пользователя "${email}"`);
 
     const user = userRepository.findByEmail(email);
-    if (!user || user.password !== password) {
+    if (!user || !compareSync(password, user.password)) {
       throw new Error('Неверная почта или пароль');
     }
 
