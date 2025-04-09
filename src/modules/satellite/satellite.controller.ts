@@ -1,6 +1,5 @@
 import { Request, Response, Router } from 'express';
 import { satelliteService } from './satellite.service';
-import { Satellite } from './satellite.type';
 
 export const satelliteController = Router();
 
@@ -11,7 +10,9 @@ satelliteController.get('', (req: Request, res: Response) => {
 
 satelliteController.get('/:id', (req: Request, res: Response) => {
   const id = req.params.id;
-  const result: Satellite | null = satelliteService.findById(id);
+
+  const result = satelliteService.findById(id);
+
   res.json(result);
 });
 

@@ -13,17 +13,14 @@ export const satelliteRepository = {
     return storage;
   },
   findById: function (id: string) {
-    const satellite = storage.find((sat) => sat.id === id) || null;
-    if (!satellite) {
-      throw new Error(`Спутник с id: '${id}' не найден!`);
-    }
-    return satellite;
+    return storage.find((sat) => sat.id === id) || null;
   },
   update(id: string, data: Partial<Omit<Satellite, 'id'>>) {
-    const satellite = storage.find((sat) => sat.id === id);
+    const satellite = this.findById(id);
     if (!satellite) {
-      throw new Error(`Спутник с id: '${id}' не найден!`);
+      return null;
     }
+
     Object.assign(satellite, data);
     return satellite;
   },
