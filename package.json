@@ -1,7 +1,6 @@
 {
   "name": "satellite_list_api",
   "version": "1.0.0",
-  "main": "dist/index.js",
   "scripts": {
     "build": "tsc",
     "start:prod": "node dist/server.js",
@@ -33,9 +32,6 @@
     "endOfLine": "lf"
   },
   "private": true,
-  "author": "",
-  "license": "ISC",
-  "description": "",
   "dependencies": {
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
