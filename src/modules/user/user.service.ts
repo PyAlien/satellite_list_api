@@ -27,14 +27,22 @@ export const userService = {
 
   getProfile(id: string): User {
     const user = userRepository.findById(id);
-    if (!user) throw new Error(`Пользователь с id '${id}' не найден`);
+
+    if (!user) {
+      throw new Error(`Пользователь с id '${id}' не найден`);
+    }
+
     return user;
   },
 
   updateProfile(id: string, data: Partial<Omit<User, 'id'>>): User {
     logger.info(`Обновление профиля пользователя ${id}`);
+
     const updated = userRepository.update(id, data);
-    if (!updated) throw new Error(`Пользователь с id '${id}' не найден`);
+    if (!updated) {
+      throw new Error(`Пользователь с id '${id}' не найден`);
+    }
+
     return updated;
   },
 };
