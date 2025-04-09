@@ -1,3 +1,4 @@
+import { NotFoundException } from '../../exceptions';
 import { logger } from '../../logger/pino.logger';
 import { satelliteRepository } from './satellite.repository';
 import { Satellite } from './satellite.type';
@@ -12,7 +13,7 @@ export const satelliteService = {
 
     const satellite = satelliteRepository.findById(id);
     if (!satellite) {
-      throw new Error(`Спутник с id: '${id}' не найден!`);
+      throw new NotFoundException(`Спутник с id: '${id}' не найден!`);
     }
 
     return satellite;

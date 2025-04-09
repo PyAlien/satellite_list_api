@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const ErrorHandler = (err: any, req: Request, res: Response, next: NextFunction) => {
-  res.status(500).json({
+  res.status(err.status ?? 500).json({
     message: err.message,
   });
 };
