@@ -6,7 +6,8 @@
     "build": "tsc",
     "start:prod": "node dist/server.js",
     "start:dev": "ts-node src/server.ts",
-    "start:watch": "nodemon --ext ts --exec && npm run start:dev"
+    "start:watch": "nodemon --ext ts --exec && npm run start:dev",
+    "lint": "eslint 'src/**/*.{ts,tsx}'"
   },
   "devDependencies": {
     "@eslint/js": "^9.23.0",
