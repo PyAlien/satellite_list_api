@@ -4,6 +4,12 @@ import { Satellite } from './satellite.type';
 
 export const satelliteController = Router();
 
+satelliteController.post('', (req: Request, res: Response) => {
+  const body = req.body;
+  const result = satelliteService.create(body);
+  res.json(result);
+});
+
 satelliteController.get('', (req: Request, res: Response) => {
   const result = satelliteService.findAll();
   res.json(result);
@@ -12,12 +18,6 @@ satelliteController.get('', (req: Request, res: Response) => {
 satelliteController.get('/:id', (req: Request, res: Response) => {
   const id = req.params.id;
   const result: Satellite | null = satelliteService.findById(id);
-  res.json(result);
-});
-
-satelliteController.post('', (req: Request, res: Response) => {
-  const body = req.body;
-  const result = satelliteService.create(body);
   res.json(result);
 });
 
