@@ -4,14 +4,14 @@ import { User } from './user.type';
 const users: User[] = [];
 
 export const userRepository = {
+  findByUsername(email: string): User | null {
+    return users.find((user) => user.email === email) || null;
+  },
+
   save(user: Omit<User, 'id'>): User {
     const newUser: User = { ...user, id: nanoid(6) };
     users.push(newUser);
     return newUser;
-  },
-
-  findByUsername(username: string): User | null {
-    return users.find((user) => user.username === username) || null;
   },
 
   findById(id: string): User | null {
@@ -19,7 +19,7 @@ export const userRepository = {
   },
 
   update(id: string, data: Partial<Omit<User, 'id'>>): User | null {
-    const user = users.find((user) => user.id === id);
+    const user = this.findById(id);
     if (!user) return null;
     Object.assign(user, data);
     return user;

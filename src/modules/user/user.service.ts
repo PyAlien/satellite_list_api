@@ -4,9 +4,9 @@ import { User } from './user.type';
 
 export const userService = {
   register(data: Omit<User, 'id'>): User {
-    logger.info(`Регистрация пользователя "${data.username}"`);
+    logger.info(`Регистрация пользователя "${data.name}". Логин: "${data.email}"`);
 
-    const exists: User | null = userRepository.findByUsername(data.username);
+    const exists: User | null = userRepository.findByUsername(data.email);
     if (exists) {
       throw new Error('Пользователь с таким именем уже существует');
     }
@@ -14,11 +14,11 @@ export const userService = {
     return userRepository.save(data);
   },
 
-  login(username: string, password: string): User {
-    logger.info(`Логин пользователя "${username}"`);
+  login(data: Pick<User, 'email' | 'password'>): User {
+    logger.info(`Логин пользователя "${data.email}"`);
 
-    const user = userRepository.findByUsername(username);
-    if (!user || user.password !== password) {
+    const user = userRepository.findByUsername(data.email);
+    if (!user || user.password !== data.password) {
       throw new Error('Неверный логин или пароль');
     }
 
@@ -27,7 +27,9 @@ export const userService = {
 
   getProfile(id: string): User {
     const user = userRepository.findById(id);
-    if (!user) throw new Error(`Пользователь с id '${id}' не найден`);
+    if (!user) {
+      throw new Error(`Пользователь с id '${id}' не найден`);
+    }
     return user;
   },
 

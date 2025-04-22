@@ -9,8 +9,8 @@ userController.post('/register', (req: Request, res: Response) => {
 });
 
 userController.post('/login', (req: Request, res: Response) => {
-  const { username, password } = req.body;
-  const user = userService.login(username, password);
+  const { email, password } = req.body;
+  const user = userService.login({ email, password });
   res.json(user);
 });
 
@@ -19,7 +19,7 @@ userController.get('/:id/profile', (req: Request, res: Response) => {
   res.json(user);
 });
 
-userController.patch('/:id', (req: Request, res: Response) => {
+userController.put('/:id', (req: Request, res: Response) => {
   const user = userService.updateProfile(req.params.id, req.body);
   res.json(user);
 });
