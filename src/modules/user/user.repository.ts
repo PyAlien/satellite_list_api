@@ -4,7 +4,7 @@ import { User } from './user.type';
 const users: User[] = [];
 
 export const userRepository = {
-  findByUsername(email: string): User | null {
+  findByEmail(email: string): User | null {
     return users.find((user) => user.email === email) || null;
   },
 
