@@ -1,7 +1,7 @@
 {
   "name": "satellite_list_api",
   "version": "1.0.0",
-  "main": "dist/index.js",
+  "main": "server.ts",
   "scripts": {
     "build": "tsc",
     "start:prod": "node dist/server.js",
@@ -34,9 +34,6 @@
     "endOfLine": "lf"
   },
   "private": true,
-  "author": "",
-  "license": "ISC",
-  "description": "",
   "dependencies": {
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.1",
