@@ -12,9 +12,11 @@ export const satelliteRepository = {
     storage.push(satellite);
     return satellite;
   },
-  findById: function (id: string) {
-    const satellite = storage.find((sat) => sat.id === id) || null;
-    return satellite;
+  findById(id: string) {
+    return storage.find((sat) => sat.id === id) || null;
+  },
+  findByName(satName: string) {
+    return storage.find((sat) => sat.name === satName) || null;
   },
   update(id: string, data: Partial<Omit<Satellite, 'id'>>) {
     const satellite = this.findById(id);
