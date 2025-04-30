@@ -1,10 +1,13 @@
 import { Request, Response, Router } from 'express';
+import { validate } from '../../validate';
+import { UserRegDto } from './dto';
 import { userService } from './user.service';
 
 export const userController = Router();
 
-userController.post('/register', (req: Request, res: Response) => {
-  const user = userService.register(req.body);
+userController.post('/reg', (req: Request, res: Response) => {
+  const instance = validate(UserRegDto, req.body);
+  const user = userService.reg(instance);
   res.json(user);
 });
 

@@ -1,3 +1,4 @@
+import 'reflect-metadata';
 import dotenv from 'dotenv';
 import express from 'express';
 import { logRoutes } from './bootstrap/log-routes';

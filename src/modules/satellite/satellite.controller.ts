@@ -1,12 +1,14 @@
 import { Request, Response, Router } from 'express';
+import { validate } from '../../validate';
+import { CreateSaDto } from './dto';
 import { satelliteService } from './satellite.service';
 import { Satellite } from './satellite.type';
 
 export const satelliteController = Router();
 
 satelliteController.post('', (req: Request, res: Response) => {
-  const body = req.body;
-  const result = satelliteService.create(body);
+  const instanse = validate(CreateSaDto, req.body);
+  const result = satelliteService.create(instanse);
   res.json(result);
 });
 

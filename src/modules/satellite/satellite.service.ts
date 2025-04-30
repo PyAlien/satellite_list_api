@@ -1,3 +1,5 @@
+import { ConflictException } from '../../exceptions';
+import { NotFoundException } from '../../exceptions/not-found.exception';
 import { logger } from '../../logger/pino.logger';
 import { satelliteRepository } from './satellite.repository';
 import { Satellite } from './satellite.type';
@@ -5,9 +7,14 @@ import { Satellite } from './satellite.type';
 export const satelliteService = {
   create(sat: Omit<Satellite, 'id'>): Satellite {
     logger.info(`Создание нового спутника "${sat.name}"`);
+
+    const exists: Satellite | null = satelliteRepository.findByName(sat.name);
+    if (exists) {
+      throw new ConflictException(`Спутник ${sat.name} уже создан!`);
+    }
     return satelliteRepository.save(sat);
   },
-  findAll: function () {
+  findAll() {
     logger.info('Чтение всех спутников');
     const satList = satelliteRepository.findAll();
     if (!satList.length) {
@@ -19,7 +26,7 @@ export const satelliteService = {
     logger.info(`Чтение спутника по id: '${id}'`);
     const satellite = satelliteRepository.findById(id);
     if (!satellite) {
-      throw new Error(`Спутник с id: '${id}' не найден!`);
+      throw new NotFoundException(`Спутник с id: '${id}' не найден!`);
     }
     return satellite;
   },

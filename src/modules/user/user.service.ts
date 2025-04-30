@@ -1,14 +1,15 @@
+import { ConflictException, UnauthorisedException } from '../../exceptions';
 import { logger } from '../../logger/pino.logger';
 import { userRepository } from './user.repository';
 import { User } from './user.type';
 
 export const userService = {
-  register(data: Omit<User, 'id'>): User {
+  reg(data: Omit<User, 'id'>): User {
     logger.info(`Регистрация пользователя "${data.name}". Логин: "${data.email}"`);
 
-    const exists: User | null = userRepository.findByUsername(data.email);
+    const exists: User | null = userRepository.findByEmail(data.email);
     if (exists) {
-      throw new Error('Пользователь с таким именем уже существует');
+      throw new ConflictException(`Пользователь с email: ${data.email} уже зарегистрирован!`);
     }
 
     return userRepository.save(data);
@@ -17,9 +18,9 @@ export const userService = {
   login(data: Pick<User, 'email' | 'password'>): User {
     logger.info(`Логин пользователя "${data.email}"`);
 
-    const user = userRepository.findByUsername(data.email);
+    const user = userRepository.findByEmail(data.email);
     if (!user || user.password !== data.password) {
-      throw new Error('Неверный логин или пароль');
+      throw new UnauthorisedException('Неверный логин или пароль');
     }
 
     return user;
