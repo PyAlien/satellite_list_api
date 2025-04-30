@@ -1,28 +1,45 @@
-import { Request, Response, Router } from 'express';
+import { Request, Response } from 'express';
+import { BaseController, Route } from '../../common';
 import { validate } from '../../validate';
 import { UserRegDto } from './dto';
-import { userService } from './user.service';
+import { UserService } from './user.service';
 
-export const userController = Router();
+export class UserController extends BaseController {
+  constructor(private readonly service: UserService) {
+    super();
+    this.initRoutes();
+  }
 
-userController.post('/reg', (req: Request, res: Response) => {
-  const instance = validate(UserRegDto, req.body);
-  const user = userService.reg(instance);
-  res.json(user);
-});
+  initRoutes() {
+    const routes: Route[] = [
+      { path: '/register', method: 'post', handler: this.register },
+      { path: '/login', method: 'post', handler: this.login },
+      { path: '/profile', handler: this.profile },
+      { path: '/profile', method: 'put', handler: this.profileUpdate },
+    ];
 
-userController.post('/login', (req: Request, res: Response) => {
-  const { email, password } = req.body;
-  const user = userService.login({ email, password });
-  res.json(user);
-});
+    this.addRoute(routes);
+  }
 
-userController.get('/:id/profile', (req: Request, res: Response) => {
-  const user = userService.getProfile(req.params.id);
-  res.json(user);
-});
+  register(req: Request, res: Response) {
+    const instance = validate(UserRegDto, req.body);
+    const user = this.service.reg(instance);
+    res.json(user);
+  }
 
-userController.put('/:id', (req: Request, res: Response) => {
-  const user = userService.updateProfile(req.params.id, req.body);
-  res.json(user);
-});
+  login(req: Request, res: Response) {
+    const { email, password } = req.body;
+    const user = this.service.login({ email, password });
+    res.json(user);
+  }
+
+  profile(req: Request, res: Response) {
+    const user = this.service.getProfile(req.params.id);
+    res.json(user);
+  }
+
+  profileUpdate(req: Request, res: Response) {
+    const user = this.service.updateProfile(req.params.id, req.body);
+    res.json(user);
+  }
+}
