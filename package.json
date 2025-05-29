@@ -1,7 +1,6 @@
 {
   "name": "satellite_list_api",
   "version": "1.0.0",
-  "main": "server.ts",
   "scripts": {
     "build": "tsc",
     "start:prod": "node dist/server.js",

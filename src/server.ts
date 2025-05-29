@@ -4,8 +4,8 @@ import express from 'express';
 import { logRoutes } from './bootstrap/log-routes';
 import { logger } from './logger/pino.logger';
 import { ErrorHandler, LogRequest } from './middlewares';
-import { satelliteController } from './modules/satellite/satellite.controller';
-import { userController } from './modules/user/user.controller';
+import { satelliteController } from './modules/satellite/satellite.module';
+import { userController } from './modules/user/user.module';
 
 dotenv.config();
 const app = express();
@@ -14,9 +14,9 @@ app.use(express.json());
 
 app.use(LogRequest);
 
-app.use('/satellite', satelliteController);
+app.use('/satellite', satelliteController.router);
 
-app.use('/user', userController);
+app.use('/user', userController.router);
 
 app.use(ErrorHandler);
 

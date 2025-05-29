@@ -1,6 +1,15 @@
-﻿import { IsString } from 'class-validator';
+﻿import { IsDateString, IsString } from 'class-validator';
 
-export class CreateSaDto {
+export class CreateSatDto {
   @IsString()
   name: string;
+
+  @IsString()
+  orbitalLocation: string;
+
+  @IsString()
+  status: string;
+
+  @IsDateString()
+  launchDate: string;
 }
