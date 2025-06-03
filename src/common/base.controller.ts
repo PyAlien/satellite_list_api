@@ -4,6 +4,10 @@ import { Route } from './types';
 export abstract class BaseController {
   public readonly router = Router();
 
+  protected constructor() {
+    this.initRoutes();
+  }
+
   public abstract initRoutes(): void;
 
   public addRoute(routes: Route | Route[]) {

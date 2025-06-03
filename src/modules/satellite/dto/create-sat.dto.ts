@@ -1,4 +1,4 @@
-﻿import { IsDateString, IsString } from 'class-validator';
+﻿import { IsString } from 'class-validator';
 
 export class CreateSatDto {
   @IsString()
@@ -10,6 +10,6 @@ export class CreateSatDto {
   @IsString()
   status: string;
 
-  @IsDateString()
+  @IsString()
   launchDate: string;
 }

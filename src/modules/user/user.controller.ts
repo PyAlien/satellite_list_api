@@ -1,11 +1,16 @@
 import { Request, Response } from 'express';
+import { inject, injectable } from 'inversify';
 import { BaseController, Route } from '../../common';
 import { validate } from '../../validate';
 import { UserRegDto } from './dto';
 import { UserService } from './user.service';
 
+@injectable()
 export class UserController extends BaseController {
-  constructor(private readonly service: UserService) {
+  constructor(
+    @inject(UserService)
+    private readonly service: UserService,
+  ) {
     super();
     this.initRoutes();
   }

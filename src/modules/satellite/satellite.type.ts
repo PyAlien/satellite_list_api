@@ -2,6 +2,6 @@ export type Satellite = {
   name: string;
   orbitalLocation: string;
   status: string;
-  launchDate: Date;
+  launchDate: string;
   id: string;
 };

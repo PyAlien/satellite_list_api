@@ -1,6 +1,6 @@
-﻿import { IsDateString, IsOptional, IsString } from 'class-validator';
+﻿import { IsOptional, IsString } from 'class-validator';
 
-export class UpdateSaDto {
+export class UpdateSatDto {
   @IsOptional()
   @IsString()
   name?: string;
@@ -14,6 +14,6 @@ export class UpdateSaDto {
   status?: string;
 
   @IsOptional()
-  @IsDateString()
+  @IsString()
   launchDate?: string;
 }

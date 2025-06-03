@@ -1,25 +1,31 @@
 import { Request, Response } from 'express';
+import { inject, injectable } from 'inversify';
 import { BaseController, Route } from '../../common';
 import { validate } from '../../validate';
-import { CreateSatDto, UpdateSaDto } from './dto';
+import { CreateSatDto, UpdateSatDto } from './dto';
 import { SatelliteService } from './satellite.service';
 import { Satellite } from './satellite.type';
 
-// export const satelliteController = Router();
+@injectable()
 export class SatelliteController extends BaseController {
-  constructor(private readonly service: SatelliteService) {
+  constructor(
+    @inject(SatelliteService)
+    private readonly service: SatelliteService,
+  ) {
     super();
     this.initRoutes();
   }
 
   initRoutes() {
     const routes: Route[] = [
-      { path: '/satellite', method: 'post', handler: this.createSat },
-      { path: '/satellite', handler: this.getAllSat },
-      { path: '/satellite/:id', method: 'put', handler: this.updateSat },
-      { path: '/satellite/:id', method: 'delete', handler: this.deleteSat },
-      { path: '/satellite/:id', method: 'get', handler: this.getSat },
+      { path: '/', method: 'post', handler: this.createSat },
+      { path: '/', handler: this.getAllSat },
+      { path: '/:id', method: 'put', handler: this.updateSat },
+      { path: '/:id', method: 'delete', handler: this.deleteSat },
+      { path: '/:id', handler: this.getSat },
     ];
+
+    this.addRoute(routes);
   }
 
   createSat(req: Request, res: Response) {
@@ -41,7 +47,7 @@ export class SatelliteController extends BaseController {
 
   updateSat(req: Request, res: Response) {
     const { id } = req.params;
-    const instance = validate(UpdateSaDto, req.body);
+    const instance = validate(UpdateSatDto, req.body);
     const updatedSatellite = this.service.update(id, instance);
     res.json(updatedSatellite);
   }

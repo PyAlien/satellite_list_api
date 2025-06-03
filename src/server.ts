@@ -1,28 +1,30 @@
 import 'reflect-metadata';
-import dotenv from 'dotenv';
 import express from 'express';
+import { Container } from 'inversify';
 import { logRoutes } from './bootstrap/log-routes';
+import { appConfig } from './config';
 import { logger } from './logger/pino.logger';
 import { ErrorHandler, LogRequest } from './middlewares';
-import { satelliteController } from './modules/satellite/satellite.module';
-import { userController } from './modules/user/user.module';
+import { satelliteController, satelliteModule } from './modules/satellite/satellite.module';
+import { userController, userModule } from './modules/user/user.module';
 
-dotenv.config();
-const app = express();
+const bootstrap = () => {
+  const appContainer = Container.merge(userModule, satelliteModule);
 
-app.use(express.json());
+  const app = express();
 
-app.use(LogRequest);
+  app.use(express.json());
+  app.use(LogRequest);
 
-app.use('/satellite', satelliteController.router);
+  app.use('/satellite', satelliteController.router);
+  app.use('/user', userController.router);
+  app.use(ErrorHandler);
 
-app.use('/user', userController.router);
+  logRoutes(app);
 
-app.use(ErrorHandler);
+  app.listen(appConfig.port, () => {
+    logger.info(`Server running on http://localhost:${appConfig.port}`);
+  });
+};
 
-logRoutes(app);
-
-const PORT = process.env.PORT || 2000;
-app.listen(PORT, () => {
-  logger.info(`Server running on http://localhost:${PORT}`);
-});
+bootstrap();

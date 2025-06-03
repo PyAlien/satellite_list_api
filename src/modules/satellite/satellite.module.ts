@@ -1,7 +1,12 @@
-﻿import { SatelliteRepository } from './satellite.repository';
-import { SatelliteService } from './satellite.service';
+﻿import { Container } from 'inversify';
 import { SatelliteController } from './satellite.controller';
+import { SatelliteRepository } from './satellite.repository';
+import { SatelliteService } from './satellite.service';
 
-const repository = new SatelliteRepository();
-const service = new SatelliteService(repository);
-export const satelliteController = new SatelliteController(service);
+export const satelliteModule = new Container();
+
+satelliteModule.bind(SatelliteRepository).toSelf().inSingletonScope();
+satelliteModule.bind(SatelliteService).toSelf().inSingletonScope();
+satelliteModule.bind(SatelliteController).toSelf().inSingletonScope();
+
+export const satelliteController = satelliteModule.get(SatelliteController);

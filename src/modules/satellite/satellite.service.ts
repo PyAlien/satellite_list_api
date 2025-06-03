@@ -1,9 +1,11 @@
+import { injectable } from 'inversify';
 import { ConflictException, NotFoundException } from '../../exceptions';
 import { logger } from '../../logger/pino.logger';
 import { CreateSatDto } from './dto';
 import { SatelliteRepository } from './satellite.repository';
 import { Satellite } from './satellite.type';
 
+@injectable()
 export class SatelliteService {
   constructor(private readonly repository: SatelliteRepository) {}
   create(sat: CreateSatDto): Satellite {
@@ -13,11 +15,7 @@ export class SatelliteService {
     if (exists) {
       throw new ConflictException(`Спутник ${sat.name} уже создан!`);
     }
-    const satellite: Omit<Satellite, 'id'> = {
-      ...sat,
-      launchDate: new Date(sat.launchDate),
-    };
-    return this.repository.save(satellite);
+    return this.repository.save(sat);
   }
   findAll() {
     logger.info('Чтение всех спутников');
@@ -49,6 +47,6 @@ export class SatelliteService {
     if (!satelliteState) {
       throw new Error(`Спутник с id: '${id}' не найден!`);
     }
-    return this.repository.delete(id);
+    return satelliteState;
   }
 }

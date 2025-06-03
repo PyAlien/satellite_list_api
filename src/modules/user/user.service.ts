@@ -1,8 +1,11 @@
+import { compareSync, hashSync } from 'bcrypt';
+import { injectable } from 'inversify';
 import { ConflictException, UnauthorisedException } from '../../exceptions';
 import { logger } from '../../logger/pino.logger';
 import { UserRepository } from './user.repository';
 import { User } from './user.type';
 
+@injectable()
 export class UserService {
   constructor(private readonly repository: UserRepository) {}
 
@@ -14,14 +17,16 @@ export class UserService {
       throw new ConflictException(`Пользователь с email: ${data.email} уже зарегистрирован!`);
     }
 
-    return this.repository.save(data);
+    const hashedPassword = hashSync(data.password, 10);
+    const userToSave = { ...data, password: hashedPassword };
+    return this.repository.save(userToSave);
   }
 
   login(data: Pick<User, 'email' | 'password'>): User {
     logger.info(`Логин пользователя "${data.email}"`);
 
     const user = this.repository.findByEmail(data.email);
-    if (!user || user.password !== data.password) {
+    if (!user || !compareSync(data.password, user.password)) {
       throw new UnauthorisedException('Неверный логин или пароль');
     }
 
