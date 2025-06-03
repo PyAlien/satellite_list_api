@@ -1,25 +1,48 @@
-import { Request, Response, Router } from 'express';
-import { userService } from './user.service';
+import { Request, Response } from 'express';
+import { inject, injectable } from 'inversify';
+import { BaseController, Route } from '../../common';
+import { validate } from '../../validate';
+import { UserRegDto } from './dto';
+import { UserService } from './user.service';
 
-export const userController = Router();
+@injectable()
+export class UserController extends BaseController {
+  constructor(
+    @inject(UserService)
+    private readonly service: UserService,
+  ) {
+    super();
+    this.initRoutes();
+  }
 
-userController.post('/register', (req: Request, res: Response) => {
-  const user = userService.register(req.body);
-  res.json(user);
-});
+  initRoutes() {
+    const routes: Route[] = [
+      { path: '/register', method: 'post', handler: this.register },
+      { path: '/login', method: 'post', handler: this.login },
+      { path: '/profile', handler: this.getProfile },
+      { path: '/updateProfile', method: 'put', handler: this.updateProfile },
+    ];
 
-userController.post('/login', (req: Request, res: Response) => {
-  const { email, password } = req.body;
-  const user = userService.login({ email, password });
-  res.json(user);
-});
+    this.addRoute(routes);
+  }
 
-userController.get('/:id/profile', (req: Request, res: Response) => {
-  const user = userService.getProfile(req.params.id);
-  res.json(user);
-});
-
-userController.put('/:id', (req: Request, res: Response) => {
-  const user = userService.updateProfile(req.params.id, req.body);
-  res.json(user);
-});
+  register(req: Request, res: Response) {
+    const instance = validate(UserRegDto, req.body);
+    const user = this.service.register(instance);
+    res.json(user);
+  }
+  login(req: Request, res: Response) {
+    const { email, password } = req.body;
+    const user = this.service.login({ email, password });
+    res.json(user);
+  }
+  getProfile(req: Request, res: Response) {
+    const instance = validate(UserRegDto, req.body);
+    const user = this.service.register(instance);
+    res.json(user);
+  }
+  updateProfile(req: Request, res: Response) {
+    const user = this.service.updateProfile(req.params.id, req.body);
+    res.json(user);
+  }
+}
